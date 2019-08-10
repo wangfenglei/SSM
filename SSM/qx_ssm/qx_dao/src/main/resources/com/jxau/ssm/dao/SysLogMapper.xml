@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jxau.ssm.dao.ISysLogDao">
+
+
+    <insert id="save" parameterType="SysLog">
+        insert into syslog(visitTime,username,ip,url,executionTime,method) values(#{visitTime},#{username},#{ip},#{url},#{executionTime},#{method})
+    </insert>
+
+    <select id="findAll" resultType="SysLog" >
+        select * from sysLog
+    </select>
+
+
+
+    <delete id="delLog">
+        delete from sysLog
+    </delete>
+
+</mapper>

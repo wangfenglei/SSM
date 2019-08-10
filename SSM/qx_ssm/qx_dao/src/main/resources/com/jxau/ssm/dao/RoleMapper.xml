@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxau.ssm.dao.IRoleDao">
+
+    <resultMap id="RolePermission" type="Role">
+        <id property="id" column="id"></id>
+        <result property="roleName" column="roleName"></result>
+        <result property="roleDesc" column="roleDesc"></result>
+        <collection property="permissions" column="id" javaType="java.util.List" ofType="Permission" select="com.jxau.ssm.dao.IPermissionDao.findPermissionByRoleId">
+
+        </collection>
+    </resultMap>
+
+    <resultMap id="RoleUser" type="Role">
+        <id property="id" column="id"></id>
+        <result property="roleName" column="roleName"></result>
+        <result property="roleDesc" column="roleDesc"></result>
+        <collection property="users" column="id" javaType="java.util.List" ofType="users" select="com.jxau.ssm.dao.IUserDao.findByRoleId">
+        </collection>
+    </resultMap>
+
+
+
+
+
+    <select id="findRoleByUserId" parameterType="String" resultMap="RolePermission">
+        select * from role where id in (select roleId from users_role where userId=#{userId})
+    </select>
+
+
+
+    <select id="findAll" resultType="Role">
+        select * from role
+    </select>
+
+    <insert id="saveRole" parameterType="Role">
+        insert into role(roleName,roleDesc) values(#{roleName},#{roleDesc})
+    </insert>
+
+
+
+    <select id="findById" resultMap="RolePermission" parameterType="String">
+        select * from role where id=#{roleId}
+    </select>
+
+
+    <select id="findOtherPermissions" resultType="Permission" parameterType="String">
+        select * from permission where id not in (select permissionId from role_permission where roleId=#{roleId})
+    </select>
+
+
+
+    <delete id="deleteFromUser_RoleByRoleId" parameterType="String">
+        delete from users_role where roleId=#{roleId}
+    </delete>
+
+
+    <delete id="deleteFromRole_PermissionByRoleId" parameterType="String">
+        delete from role_permission where roleId=#{roleId}
+    </delete>
+
+
+    <delete id="deleteRoleById" parameterType="String">
+        delete from role where id=#{roleId}
+    </delete>
+
+
+    <insert id="addPermissionToRole" >
+        insert into role_permission(roleId,permissionId) values(#{roleId},#{permissionId})
+    </insert>
+
+    <select id="findByIdUser" parameterType="String" resultMap="RoleUser">
+        select * from role where id in (select  roleId from role_permission where permissionId=#{permissionId})
+    </select>
+
+
+    <delete id="delPermissionForRole" >
+        delete from role_permission where permissionId=#{permissionId}) and roleId=#{roleId}
+    </delete>
+</mapper>

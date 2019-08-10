@@ -1,0 +1,12 @@
+com\jxau\ssm\service\impl\OrderServiceImpl.class
+com\jxau\ssm\service\impl\UserServiceImpl.class
+com\jxau\ssm\service\IRoleService.class
+com\jxau\ssm\service\IOrderService.class
+com\jxau\ssm\service\impl\ProductServiceImpl.class
+com\jxau\ssm\service\IPermissionService.class
+com\jxau\ssm\service\impl\RoleServiceImpl.class
+com\jxau\ssm\service\impl\SysLogServiceImpl.class
+com\jxau\ssm\service\IProductService.class
+com\jxau\ssm\service\impl\PermissionServiceImpl.class
+com\jxau\ssm\service\IUserService.class
+com\jxau\ssm\service\ISysLogService.class

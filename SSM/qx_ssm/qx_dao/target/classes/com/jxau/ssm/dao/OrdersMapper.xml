@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jxau.ssm.dao.IOrdersDao">
+
+<!--    定义orders的resultMap-->
+    <resultMap id="orderMapOne" type="orders">
+        <id property="id" column="id"></id>
+        <result property="orderNum" column="orderNum"></result>
+        <result property="orderTime" column="orderTime"></result>
+        <result property="orderStatus" column="orderStatus"></result>
+        <result property="peopleCount" column="peopleCount"></result>
+        <result property="payType" column="payType"></result>
+        <result property="orderDesc" column="orderDesc"></result>
+        <result property="productId" column="productId"></result>
+        <result property="memberId" column="memberId"></result>
+
+        <association property="product" column="productId" select="com.jxau.ssm.dao.IProductDao.findById" javaType="product"></association>
+    </resultMap>
+
+    <resultMap id="orderMapMany" type="orders">
+        <id property="id" column="id"></id>
+        <result property="orderNum" column="orderNum"></result>
+        <result property="orderTime" column="orderTime"></result>
+        <result property="orderStatus" column="orderStatus"></result>
+        <result property="peopleCount" column="peopleCount"></result>
+        <result property="payType" column="payType"></result>
+        <result property="orderDesc" column="orderDesc"></result>
+        <result property="productId" column="productId"></result>
+        <result property="memberId" column="memberId"></result>
+
+        <association property="product" column="productId" select="com.jxau.ssm.dao.IProductDao.findById" javaType="product"></association>
+        <association property="member" column="memberId" select="com.jxau.ssm.dao.IMemberDao.findById" javaType="Member"></association>
+        <collection property="travellers" ofType="Traveller" javaType="java.util.List" column="id" select="com.jxau.ssm.dao.ITravellerDao.findByOrdersId"></collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="orderMapOne">
+          select * from orders
+    </select>
+
+    <select id="findByNum" parameterType="String" resultMap="orderMapOne">
+        select * from orders where orderNum=#{orderNum}
+    </select>
+
+    <select id="findById" resultMap="orderMapMany" parameterType="String">
+        select * from orders where id=#{id}
+    </select>
+
+
+    <select id="findByProductId" parameterType="String" resultMap="orderMapOne">
+        select * from orders where productId=#{productId}
+    </select>
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxau.ssm.dao.IPermissionDao">
+
+
+    <resultMap id="PermissionMany" type="Permission">
+        <id property="id" column="id" ></id>
+        <result property="permissionName" column="permissionName"></result>
+        <result property="url" column="url"></result>
+        <collection property="roles" column="id" javaType="java.util.List" ofType="Role" select="com.jxau.ssm.dao.IRoleDao.findByIdUser"></collection>
+    </resultMap>
+
+    <select id="findPermissionByRoleId" parameterType="String" resultType="Permission">
+        select * from permission where id in (select permissionId from role_permission where roleId=#{id} )
+    </select>
+
+    <select id="findAll" resultType="Permission">
+        select * from permission
+    </select>
+
+    <select id="save" parameterType="Permission">
+        insert into permission(permissionName,url) values(#{permissionName},#{url})
+    </select>
+
+
+    <select id="findPermissionMany" parameterType="String" resultMap="PermissionMany">
+        select * from permission where id = #{id}
+    </select>
+
+
+    <delete id="deletePermission" parameterType="java.util.List">
+        delete from permission
+        <where>
+            <if test="list.size() > 0">
+                <foreach collection="list" open="id in (" close=" ) " separator="," item="id">
+                    #{id}
+                </foreach>
+            </if>
+
+        </where>
+    </delete>
+
+</mapper>
